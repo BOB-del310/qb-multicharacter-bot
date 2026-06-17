@@ -49,7 +49,8 @@ app.use(express.json());
 // Auth middleware
 function checkSecret(req, res, next) {
   const secret = req.headers['x-secret'] || req.body?.secret;
-  if (secret !== HTTP_SECRET) {
+  if (!secret || secret !== HTTP_SECRET) {
+    console.log('[auth] Failed secret check. Got:', secret);
     return res.status(401).json({ error: 'unauthorized' });
   }
   next();
